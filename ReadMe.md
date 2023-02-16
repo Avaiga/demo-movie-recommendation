@@ -54,7 +54,7 @@ A user has a userID generated when the user opens the app. Two pages are created
 
 - Possibility to create Data Nodes for tracking/profiling:
     - Selected films
-    - Vewed films
+    - Viewed films
     - Liked films
 - Possibility to recommand a list of films based on selected/viewed/liked films (constraints on genres)
     - Example: `np.mean([find_similar_movies(movie_id) for movie_id in liked_movies_id])`
