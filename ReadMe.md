@@ -14,10 +14,13 @@
 Taipy is a Python library for creating Business Applications. More information on our
 [website](https://www.taipy.io).
 
-[Demo Movie Recommendation](https://github.com/Avaiga/demo-movie-recommendation) is a full application showing how Taipy Core and Taipy Gui can work together to build a simple but powerful application.
-This demo shows the basics of searcha and recommendation algorithms. The goal is to be able to search for films and recommend related/similar films. These recommendation will use the user profile by tracking their session.
+[Demo Movie Recommendation](https://github.com/Avaiga/demo-movie-recommendation) is a 
+full application showing how Taipy Core and Taipy Gui can work together to build a simple 
+but powerful application. This demo shows the basics of search a and recommendation 
+algorithms. The goal is to be able to search for films and recommend related/similar films. 
+These recommendations will use the user profile by tracking their session.
 
-Get data [here](https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbW11QUd5a0dzZ1Y0UXNYZXdLVXdUSGhRZHV5d3xBQ3Jtc0ttSUwxcDVXVnpPV3k3TDdLcW5qaEJQN3lVNGI0Wkw5TlZGQ3RVSnFBeXJPSERsdEI3a2ZXX2psSGRMSTlydnpvTExTcGpPdkdIR19fWGhFWndHcUVKRll1LVZURlZPU0o3UDFGRUk2UHpNTnpMc05ubw&q=https%3A%2F%2Ffiles.grouplens.org%2Fdatasets%2Fmovielens%2Fml-25m.zip&v=eyEabQRBMQA).
+Get data [here](https://files.grouplens.org/datasets/movielens/ml-25m.zip).
 
 ### Demo Type
 - **Level**: Advanced
@@ -28,10 +31,10 @@ Get data [here](https://www.youtube.com/redirect?event=video_description&redir_t
 
 ## How to run
 
-This demo works with a Python version superior to 3.8. Install the dependencies of the *requirements.txt* and run the *main.py*.
+This demo works with a Python version superior to 3.8. Install the dependencies of the 
+*requirements.txt* and run the *main.py*.
 
-Get data [here](https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbW11QUd5a0dzZ1Y0UXNYZXdLVXdUSGhRZHV5d3xBQ3Jtc0ttSUwxcDVXVnpPV3k3TDdLcW5qaEJQN3lVNGI0Wkw5TlZGQ3RVSnFBeXJPSERsdEI3a2ZXX2psSGRMSTlydnpvTExTcGpPdkdIR19fWGhFWndHcUVKRll1LVZURlZPU0o3UDFGRUk2UHpNTnpMc05ubw&q=https%3A%2F%2Ffiles.grouplens.org%2Fdatasets%2Fmovielens%2Fml-25m.zip&v=eyEabQRBMQA).
-
+Get data [here](https://files.grouplens.org/datasets/movielens/ml-25m.zip).
 
 ## Introduction
 
@@ -42,8 +45,9 @@ A user has a userID generated when the user opens the app. Two pages are created
 - Be able to search for films
 - List of films appears after search (selector of movies)
 - Clicking on a movie will display a description of said movies, image, ratings, casting, date, ...
-    - Possiblity to use Imdb api in real time to provide these information
-- Recommendation on searched films (not based on syntax but on association with this film/similar films Avengers ~ Batman)
+    - Possibility to use Imdb api in real time to provide these information
+- Recommendation on searched films (not based on syntax but on association with 
+  this film/similar films Avengers ~ Batman)
 - Recommendation depending on liked films of user
 
 ### User page
@@ -86,12 +90,15 @@ specific language governing permissions and limitations under the License.
 
 ## Installation
 
-Want to install _Demo Movie Recommendation_? Check out our [`INSTALLATION.md`](INSTALLATION.md) file.
+Want to install _Demo Movie Recommendation_? Check out our 
+[`INSTALLATION.md`](INSTALLATION.md) file.
 
 ## Contributing
 
-Want to help build _Demo Movie Recommendation_? Check out our [`CONTRIBUTING.md`](CONTRIBUTING.md) file.
+Want to help build _Demo Movie Recommendation_? Check out our 
+[`CONTRIBUTING.md`](CONTRIBUTING.md) file.
 
 ## Code of conduct
 
-Want to be part of the _Demo Movie Recommendation_ community? Check out our [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) file.
+Want to be part of the _Demo Movie Recommendation_ community? Check out our 
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) file.
