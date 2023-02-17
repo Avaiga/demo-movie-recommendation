@@ -1,0 +1,27 @@
+
+[DATA_NODE.viewed]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+default_data = [ ]
+
+[DATA_NODE.liked]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+default_data = [ ]
+
+[DATA_NODE.disliked]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+default_data = [ ]
+
+[TASK.dumb]
+inputs = [ "viewed:SECTION", "liked:SECTION", "disliked:SECTION" ]
+outputs = [ ]
+function = "algos.algos.dumb:function"
+skippable = "False:bool"
+
+[PIPELINE.pipeline]
+tasks = [ "dumb:SECTION" ]
+
+[SCENARIO.user]
+pipelines = [ "pipeline:SECTION" ]

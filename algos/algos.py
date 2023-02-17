@@ -4,6 +4,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+def dumb(a,b,c):
+    ...
 
 def clean_title(title):
     title = re.sub("[^a-zA-Z0-9 ]", "", title)
@@ -15,8 +17,22 @@ def search(title):
     similarity = cosine_similarity(query_vec, tfidf).flatten()
     indices = np.argpartition(similarity, -5)[-5:]
     results = movies.iloc[indices].iloc[::-1]
-    
+    print(results)
     return results
+
+def get_rating(movie_id):
+    try:
+        if int(movie_id) in ratings["movieId"].unique():
+            return {"Ratings" : list(ratings[ratings["movieId"] == int(movie_id)]["rating"])}
+        else:
+            return {"Ratings" : [0,1,2]}
+    except Exception as e:
+        print(movie_id, e)
+        return  {"Ratings" : [0,1,2]}
+
+
+def mean_rating(selected_film):
+    return float(np.mean(get_rating(selected_film)['Ratings']))
 
 def find_similar_movies(movie_id):
     similar_users = ratings[(ratings["movieId"] == movie_id) & (ratings["rating"] > 4)]["userId"].unique()

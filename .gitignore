@@ -1,3 +1,4 @@
 pages/search_sol.py
 *.pyc
 *.csv
+.data/
