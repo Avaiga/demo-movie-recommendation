@@ -13,12 +13,16 @@ OUTPUT_FILE = '../Downloads/ml-25m/augmented_movies.csv'
 def get_imdb_movie_data(imdb_id):
     '''given a single movie IMDB id this function gets its description, director and lead cast from IMDB'''
     web_address = 'https://www.imdb.com/title/tt{0:07d}/'.format(imdb_id)
-    res = requests.get(web_address, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        res = requests.get(web_address, headers={'User-Agent': 'Mozilla/5.0'})
+    except requests.exceptions.RequestException as err:
+        print(f"{imdb_id} requests exception found", err)
     if res.status_code == 200:
         soup = BeautifulSoup(res.text, 'html.parser')
-        description = soup.find("span", {"data-testid": "plot-xs_to_m"}).getText()
-        if not description:
-            print(f'{imdb_id} description not found')
+        try:
+            description = soup.find("span", {"data-testid": "plot-xs_to_m"}).getText()
+        except AttributeError:
+            description= ''
         metadata = soup.find_all("li", {"data-testid": "title-pc-principal-credit"})
         if len(metadata) == 0:
             print(f'{imdb_id} metadata not found')
@@ -34,11 +38,7 @@ def get_imdb_movie_data(imdb_id):
                     lead_cast.append(item.getText())
         if (len(director) == 0) or (len(lead_cast) == 0):
             print(f'{imdb_id} info is missing')
-        return description, director, lead_cast
-    else:
-        print(f"problem finding website for movie {imdb_id}") 
-        return None, None, None  
-    
+    return description, director, lead_cast
 
 def get_all_movies_imdb_data(df):
     '''collect IMDB data for ALL movies in the dataframe'''
@@ -76,5 +76,4 @@ if __name__ == '__main__':
     df = pd.read_csv(MOVIE_FILE)
     links_df = pd.read_csv(LINKS_FILE)
     augmented_data = augment_data(df)
-    augmented_data.to_csv(OUTPUT_FILE)
-
+    augmented_data.to_csv(OUTPUT_FILE, index=False)
