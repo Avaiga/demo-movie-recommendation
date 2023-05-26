@@ -21,6 +21,7 @@ def get_imdb_movie_data(imdb_id):
         soup = BeautifulSoup(res.text, 'html.parser')
         try:
             description = soup.find("span", {"data-testid": "plot-xs_to_m"}).getText()
+            #description = soup.find("span", {"data-testid": "plot-xl"}).getText()
         except AttributeError:
             description= ''
         metadata = soup.find_all("li", {"data-testid": "title-pc-principal-credit"})
@@ -35,7 +36,10 @@ def get_imdb_movie_data(imdb_id):
                         director.append(item.getText())
             if 'Stars' in element.contents[0].getText():
                 for item in element.contents[1].contents[0]:
-                    lead_cast.append(item.getText())
+                    if item.getText() not in lead_cast:
+                        lead_cast.append(item.getText())
+        # if no director or lead cast the function returns them as emty lists which 
+        # works for the current content recommender, so we might not need next if statement
         if (len(director) == 0) or (len(lead_cast) == 0):
             print(f'{imdb_id} info is missing')
     return description, director, lead_cast
