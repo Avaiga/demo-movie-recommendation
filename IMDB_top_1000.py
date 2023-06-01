@@ -87,16 +87,17 @@ def extract_keywords(text):
 
 def transform_df(old_df):
     '''this function transforms the dataframe into a dataframe with 2 columns: movie title and bag of words'''
-    old_df['Genre'] = old_df['Genre'].map(lambda x: x.replace(' ',''))
-    old_df['Genre'] = old_df['Genre'].map(lambda x: x.lower().split(','))
-    old_df['Director'] = old_df['Director'].map(lambda x: x.replace(' ',''))
-    old_df['Director'] = old_df['Director'].map(lambda x: x.lower().split(','))
-    old_df['Cast'] = old_df['Cast'].map(lambda x: x.replace(' ',''))
-    old_df['Cast'] = old_df['Cast'].map(lambda x: x.lower().split(','))
-    old_df['Keywords'] = old_df['Description'].map(extract_keywords)
-    old_df['Bagofwords'] = old_df.Genre + old_df.Director + old_df.Cast + old_df.Keywords
-    old_df['Bagofwords'] = old_df['Bagofwords'].map(lambda x: ' '.join(x))
-    new_df = old_df.drop(columns=['Genre', 'Description', 'Director', 'Cast', 'Keywords'])
+    new_df = old_df.copy()
+    new_df['Genre'] = new_df['Genre'].map(lambda x: x.replace(' ',''))
+    new_df['Genre'] = new_df['Genre'].map(lambda x: x.lower().split(','))
+    new_df['Director'] = new_df['Director'].map(lambda x: x.replace(' ',''))
+    new_df['Director'] = new_df['Director'].map(lambda x: x.lower().split(','))
+    new_df['Cast'] = new_df['Cast'].map(lambda x: x.replace(' ',''))
+    new_df['Cast'] = new_df['Cast'].map(lambda x: x.lower().split(','))
+    new_df['Keywords'] = new_df['Description'].map(extract_keywords)
+    new_df['Bagofwords'] = new_df.Genre + new_df.Director + new_df.Cast + new_df.Keywords
+    new_df['Bagofwords'] = new_df['Bagofwords'].map(lambda x: ' '.join(x))
+    new_df = new_df.drop(columns=['Genre', 'Description', 'Director', 'Cast', 'Keywords'])
     
     return new_df
     
@@ -104,6 +105,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Usage: function requires an output file name")
         sys.exit()
+    OUTPUT_FILE = sys.argv[1]
     df = build_df(WEB_ADDRESSES)
     transformed_df = transform_df(df)
     transformed_df.to_csv(OUTPUT_FILE, index=False)
