@@ -4,8 +4,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+from recommender_algos import process_title, give_recommendations
+
 def dumb(a,b,c):
-    ...
+    recommended_content = []
+    if len(a) > 0:
+        for film in a:
+            film_bag = process_title(film, movies)
+            recs = give_recommendations(film_bag, 10, IMDB_top_1000)
+            for rec in recs:
+                if (b.count(rec) == 0) and (c.count(rec) == 0):
+                    recommended_content.append(rec)
+    return recommended_content
 
 def clean_title(title):
     title = re.sub("[^a-zA-Z0-9 ]", "", title)
@@ -53,9 +63,10 @@ def find_similar_movies(movie_id):
 vectorizer = TfidfVectorizer(ngram_range=(1,2))
 #movie_id = 89745
 
-ratings = pd.read_csv('data/ratings.csv')
+ratings = pd.read_csv('../Downloads/ml-25m/ratings.csv')
+IMDB_top_1000 = pd.read_csv("../Downloads/ml-25m/IMDB_top_1000.csv")
 
-movies = pd.read_csv("data/movies.csv")
+movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 tfidf = vectorizer.fit_transform(movies["clean_title"])
 

@@ -8,13 +8,23 @@ from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from rake_nltk import Rake
 
-from IMDB_top_1000 import extract_keywords, transform_df
-
 MOVIES_FILE = '../Downloads/ml-25m/augmented_small_movies.csv'
 TOP_1000_FILE = '../Downloads/ml-25/IMDB_top_1000.csv'
 #movie_title = 'Waiting to Exhale'
 #num_rec = 10
+def extract_keywords(text):
+    '''this function extracts keywords from movie description using nltk Rake'''
+    r = Rake()
 
+    r.extract_keywords_from_text(text)
+
+    # getting the dictionary whith key words as keys and their scores as values
+    key_words_dict_scores = r.get_word_degrees()
+   
+    key_words = list(key_words_dict_scores.keys())
+    
+    return key_words
+    
 def process_title(title):
     '''this function, given a movie title, retrieves movie info from the movie database file, and outputs it as a string to be processed by the vectorizer '''
     genre = movie_df[movie_df.title == title]['genres'].values[0].replace('|', ' ').lower()

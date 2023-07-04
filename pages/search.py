@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 import taipy as tp
 
-movies = pd.read_csv("data/movies.csv")
+#movies = pd.read_csv("data/movies.csv")
+movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 
 
