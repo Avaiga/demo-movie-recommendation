@@ -26,4 +26,4 @@ def on_init(state):
 
 if __name__ == "__main__":
     gui = Gui(pages=pages)
-    gui.run(port=5006, use_reloader=True)
+    gui.run()#(port=5006, use_reloader=True)
