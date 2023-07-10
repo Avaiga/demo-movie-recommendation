@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import pandas as pd
 
@@ -8,10 +7,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from rake_nltk import Rake
 
-MOVIES_FILE = '../Downloads/ml-25m/augmented_small_movies.csv'
-TOP_1000_FILE = '../Downloads/ml-25/IMDB_top_1000.csv'
-#movie_title = 'Waiting to Exhale'
-#num_rec = 10
 def extract_keywords(text):
     '''this function extracts keywords from movie description using nltk Rake'''
     r = Rake()
@@ -24,9 +19,15 @@ def extract_keywords(text):
     key_words = list(key_words_dict_scores.keys())
     
     return key_words
-    
-def process_title(title):
-    '''this function, given a movie title, retrieves movie info from the movie database file, and outputs it as a string to be processed by the vectorizer '''
+
+def process_title(title, movie_df):
+    '''this function, given a movie title, retrieves movie info from the movie database, and outputs it as a string to be processed by the vectorizer '''
+    idx = movie_df['title'].str.contains(title, case=False)
+    if max(idx.values):
+        title = movie_df['title'][idx].values[0]
+    else:
+      print('Please give a different movie title')
+
     genre = movie_df[movie_df.title == title]['genres'].values[0].replace('|', ' ').lower()
 
     director = movie_df[movie_df.title == title]['directors'].values[0].replace('[', '').replace(']', '').lower()
@@ -54,14 +55,9 @@ def process_title(title):
 
     return movie_bag
 
-def give_recommendations(title, num_rec):
-    '''given a movie title and the desired number of recommendations, this function returns an array of recommended movie titles'''
-    idx = movie_df['title'].str.contains(title, case=False)
-    if max(idx.values):
-        title = movie_df['title'][idx].values[0]
-        movie_bagofwords = process_title(title)
-    else:
-      print('Please give a different movie title')
+def give_recommendations(movie_bagofwords, num_rec, top_1000_df):
+    '''given a movie bag_of_words and the desired number of recommendations, this function returns an array of recommended movie titles'''
+    
 
     vectorizer = CountVectorizer()
     count_matrix = vectorizer.fit_transform(top_1000_df['Bagofwords'])
@@ -79,7 +75,10 @@ def give_recommendations(title, num_rec):
 
     return recommendations
 
-if __name__ == '__main__': 
+
+if __name__ == '__main__':
+    import sys
+
     if len(sys.argv) != 5:
         print("Usage: function requires a movie title, number of desired recommendations, movie database file name, and the top 1000 IMDB movie file")
         sys.exit()
@@ -89,6 +88,7 @@ if __name__ == '__main__':
     NUM_REC = sys.argv[2]
     MOVIE_FILE = sys.argv[3]
     TOP_1000_FILE = sys.argv[4]
+
 
     movie_df = pd.read_csv(MOVIE_FILE)
     top_1000_df = pd.read_csv(TOP_1000_FILE)

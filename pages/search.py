@@ -9,7 +9,7 @@ import pandas as pd
 import taipy as tp
 
 #movies = pd.read_csv("data/movies.csv")
-movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
+movies = pd.read_csv('data/augmented_small_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 
 
@@ -27,18 +27,18 @@ search_films_md = """
 # Search **films**{: .color_primary}
 
 <|layout|columns=1 1|
-<|{searched_film}|input|on_change=search_film|label=Search films...|width=fit_content|>
+<|{searched_film}|input|on_change=search_film|label=Search films...|>
 
-<|{selected_film}|selector|lov={film_selector}|on_change=recommend_films|width=fit_content|>
+<|{selected_film}|selector|lov={film_selector}|on_change=recommend_films|>
 |>
 |>
 """
 
 description_films_md = """
-<|part|class_name=container|
+<|container|
 <Description|part|render={selected_film[0]!=""}|
 ## **Description**{: .color_primary} of films
-<card|part|class_name=card|
+<|card|
 <|layout|columns=1 1|
 <ratings|
 <br/>
@@ -59,7 +59,7 @@ Number of **reviews**{: .color_primary}: <|{len(get_rating(selected_film[0])['Ra
 |>
 
 <|{get_rating(selected_film[0])}|chart|type=histogram|x=Ratings|options={options}|>
-|card>
+|>
 |Description>
 |>
 """

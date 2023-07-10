@@ -1,5 +1,3 @@
-from assets import *
-
 from taipy.gui import Gui, Markdown, notify
 from pages.search import page_search
 from pages.user import page_user, user_disliked, user_liked, user_viewed
@@ -26,4 +24,4 @@ def on_init(state):
 
 if __name__ == "__main__":
     gui = Gui(pages=pages)
-    gui.run()#(port=5006, use_reloader=True)
+    gui.run(port=5006)#(port=5006, use_reloader=True)
