@@ -6,9 +6,11 @@ import requests
 from bs4 import BeautifulSoup
 
 import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
 from rake_nltk import Rake
 
-OUTPUT_FILE = '../Downloads/ml-25m/IMDB_top_1000.csv'
+OUTPUT_FILE = 'data/IMDB_top_1000.csv'
 
 WEB_ADDRESS_0 = 'https://www.imdb.com/search/title/?count=100&groups=top_1000&sort=user_rating'
 WEB_ADDRESS_1 = 'https://www.imdb.com/search/title/?groups=top_1000&sort=user_rating,desc&count=100&start=101&ref_=adv_nxt'
@@ -102,10 +104,10 @@ def transform_df(old_df):
     return new_df
     
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: function requires an output file name")
-        sys.exit()
-    OUTPUT_FILE = sys.argv[1]
+    #if len(sys.argv) != 2:
+    #    print("Usage: function requires an output file name")
+    #    sys.exit()
+    #OUTPUT_FILE = sys.argv[1]
     df = build_df(WEB_ADDRESSES)
     transformed_df = transform_df(df)
     transformed_df.to_csv(OUTPUT_FILE, index=False)

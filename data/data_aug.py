@@ -5,9 +5,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-MOVIE_FILE = '../Downloads/ml-25m/xsmall_movies.csv'
-LINKS_FILE = '../Downloads/ml-25m/links.csv'
-OUTPUT_FILE = '../Downloads/ml-25m/augmented_movies.csv'
+MOVIE_FILE = 'data/xsmall_movies.csv'
+LINKS_FILE = '.data/links.csv'
+OUTPUT_FILE = 'data/augmented_movies.csv'
 
 
 def get_imdb_movie_data(imdb_id):
