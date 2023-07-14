@@ -4,12 +4,14 @@ read_entity_retry = "3:int"
 [DATA_NODE.augmented_movies_dataset]
 storage_type = "csv"
 scope = "GLOBAL:SCOPE"
-path = "data/augmented_small_movies.csv"
+path = "../Downloads/ml-25m/augmented_small_movies.csv"
+#path = "data/augmented_small_movies.csv"
 
 [DATA_NODE.imdb_top_1000]
 storage_type = "csv"
 scope = "GLOBAL:SCOPE"
-path = "data/IMDB_top_1000.csv"
+path = "../Downloads/ml-25m/IMDB_top_1000.csv"
+#path = "data/IMDB_top_1000.csv"
 
 [DATA_NODE.movie_title]
 default_data = "Toy Story"

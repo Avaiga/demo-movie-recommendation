@@ -6,11 +6,13 @@ from algos.recommender_algos import process_title, give_recommendations
 # Data Node configuration
 augmented_movie_cfg = Config.configure_data_node(id="augmented_movies_dataset",
                                                 storage_type="csv",
-                                                path="data/augmented_small_movies.csv",
+                                                path="../Downloads/ml-25m/augmented_small_movies.csv",
+                                                #path="data/augmented_small_movies.csv",
                                                 scope=Scope.GLOBAL)
 
 imdb_top_1000_cfg = Config.configure_data_node(id="imdb_top_1000", storage_type="csv",
-                                                path="data/IMDB_top_1000.csv",
+path="../Downloads/ml-25m/IMDB_top_1000.csv",
+                                                #path="data/IMDB_top_1000.csv",
                                                 scope=Scope.GLOBAL)
 
 movie_title_cfg = Config.configure_data_node(id="movie_title", default_data="Toy Story")

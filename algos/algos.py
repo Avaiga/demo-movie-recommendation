@@ -63,10 +63,15 @@ def find_similar_movies(movie_id):
 vectorizer = TfidfVectorizer(ngram_range=(1,2))
 #movie_id = 89745
 
-ratings = pd.read_csv('data/ratings.csv')
-IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
+ratings = pd.read_csv('../Downloads/ml-25m/ratings.csv')
+IMDB_top_1000 = pd.read_csv("../Downloads/ml-25m/IMDB_top_1000.csv")
 
-movies = pd.read_csv('data/augmented_small_movies.csv')
+movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
+
+#ratings = pd.read_csv('data/ratings.csv')
+#IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
+
+#movies = pd.read_csv('data/augmented_small_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 tfidf = vectorizer.fit_transform(movies["clean_title"])
 

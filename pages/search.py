@@ -2,6 +2,8 @@ from taipy.gui import Gui, notify, Markdown
 
 from algos.algos import clean_title, search, find_similar_movies, get_rating, mean_rating
 
+from algos.recommender_algos import process_title, give_recommendations
+
 from pages.user import refresh_user
 
 import numpy as np
@@ -9,7 +11,9 @@ import pandas as pd
 import taipy as tp
 
 #movies = pd.read_csv("data/movies.csv")
-movies = pd.read_csv('data/augmented_small_movies.csv')
+#movies = pd.read_csv('data/augmented_small_movies.csv')
+IMDB_top_1000 = pd.read_csv('../Downloads/ml-25m/IMDB_top_1000.csv')
+movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 
 
@@ -82,8 +86,16 @@ def search_film(state):
 
 def recommend_films(state):
     movie_id = int(state.selected_film[0])
-    recommended_movies = find_similar_movies(movie_id)
-    state.film_recommended_selector = list(recommended_movies['title'])[:5]
+    recommended_movies_1 = find_similar_movies(movie_id)
+    all_recommended_movies = list(recommended_movies_1['title'])[:5]
+    movie_title = state.selected_film[1]
+    movie_bagofwords = process_title(movie_title, movies)
+    recommended_movies_2 = list(give_recommendations(movie_bagofwords, 7, IMDB_top_1000))
+    for movie in recommended_movies_2:
+        if movie not in all_recommended_movies:
+            all_recommended_movies.append(movie)
+    
+    state.film_recommended_selector = all_recommended_movies
 
 
 def on_like(state):

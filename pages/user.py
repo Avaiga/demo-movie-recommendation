@@ -6,8 +6,10 @@ import taipy as tp
 
 from algos.recommender_algos import process_title, give_recommendations
 
-IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
-movies = pd.read_csv('data/augmented_small_movies.csv')
+#IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
+#movies = pd.read_csv('data/augmented_small_movies.csv')
+IMDB_top_1000 = pd.read_csv("../Downloads/ml-25m/IMDB_top_1000.csv")
+movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
 
 selected_user_liked = None
 user_liked = []
