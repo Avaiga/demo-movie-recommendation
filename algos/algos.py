@@ -9,12 +9,17 @@ from algos.recommender_algos import process_title, give_recommendations
 def dumb(a,b,c):
     recommended_content = []
     if len(a) > 0:
+        all_film_bag = ''
         for film in a:
             film_bag = process_title(film, movies)
-            recs = give_recommendations(film_bag, 10, IMDB_top_1000)
-            for rec in recs:
-                if (b.count(rec) == 0) and (c.count(rec) == 0):
-                    recommended_content.append(rec)
+            all_film_bag = all_film_bag + ' ' + film_bag
+
+        recs = give_recommendations(all_film_bag, 30, IMDB_top_1000)
+        for rec in recs:
+            if (b.count(rec) == 0) and (c.count(rec) == 0):
+                recommended_content.append(rec)
+            if len(recommended_content) >= 10:
+                break
     return recommended_content
 
 def clean_title(title):
