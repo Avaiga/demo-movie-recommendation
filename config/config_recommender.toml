@@ -1,0 +1,37 @@
+[TAIPY]
+read_entity_retry = "3:int"
+
+[DATA_NODE.augmented_movies]
+storage_type = "csv"
+scope = "GLOBAL:SCOPE"
+path = "data/augmented_movies.csv"
+
+[DATA_NODE.movie_title]
+default_data = "Toy Story"
+
+[DATA_NODE.movie_bagofwords]
+
+[DATA_NODE.number_of_rec]
+default_data = "10:int"
+
+[DATA_NODE.recommendations]
+
+[TASK.process_title]
+function = "algos.recommender_algos.process_title:function"
+inputs = [ "movie_title:SECTION", "augmented_movies:SECTION",]
+outputs = [ "movie_bagofwords:SECTION",]
+skippable = "False:bool"
+
+[TASK.give_recommendations]
+function = "algos.recommender_algos.give_recommendations:function"
+inputs = [ "movie_bagofwords:SECTION", "number_of_rec:SECTION", "augmented_movies:SECTION",]
+outputs = [ "recommendations:SECTION",]
+skippable = "False:bool"
+
+[PIPELINE.pipeline]
+tasks = [ "process_title:SECTION", "give_recommendations:SECTION",]
+
+[SCENARIO.scenario]
+pipelines = [ "pipeline:SECTION",]
+
+[SCENARIO.scenario.comparators]
