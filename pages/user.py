@@ -5,9 +5,10 @@ from taipy.gui import Gui, notify, Markdown
 import taipy as tp
 
 from algos.recommender_algos import process_title, give_recommendations
+from algos.algos import recommend_films_to_user
 
-IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
-movies = pd.read_csv('data/augmented_small_movies.csv')
+movies = pd.read_parquet('data/augmented_movies.parquet')
+movies.index = movies.movieId
 
 selected_user_liked = None
 user_liked = []
@@ -29,35 +30,44 @@ page_user = Markdown("""
 <liked|
 ## ♥️ Liked
 
-<|{selected_user_liked}|selector|lov={user_liked}|on_change=recommend_content|width=fit-content|>
+<|{selected_user_liked}|selector|lov={user_liked}|width=fit-content|>
 |liked>
 
 <disliked|
 ## 👎 Disliked
 
-<|{selected_user_disliked}|selector|lov={user_disliked}|label=Disliked|width=fit-content|>
+<|{selected_user_disliked}|selector|lov={user_disliked}|width=fit-content|>
 |disliked>
 
 <viewed|
 ## 📽️ Viewed
 
-<|{selected_user_viewed}|selector|lov={user_viewed}|label=Viewed|width=fit-content|>
+<|{selected_user_viewed}|selector|lov={user_viewed}|width=fit-content|>
 |viewed>
 |>
 
 <|part|class_name=container|
-#  Similar to the **movie you liked**{: .color_primary} 
-<|{selected_recommended_content}|selector|lov={content_selector}|width=fit_content|>
+#  Similar to the **movies you liked**{: .color-primary} 
+<| Recommend|button|on_action=recommend_content_user|>
+<|{selected_recommended_content}|selector|lov={content_selector}|width=fit_content|value_by_id|>
 |>
 
 |>
 """)
 
-def recommend_content(state):
-    movie_title = state.selected_user_liked[1]
-    movie_bagofwords = process_title(movie_title, movies)
-    recommended_movies = give_recommendations(movie_bagofwords, 7, IMDB_top_1000)
-    state.content_selector = recommended_movies
+def recommend_content_user(state):
+    #movie_title = state.selected_user_liked[1]
+    #movie_bagofwords = process_title(movie_title, movies)
+    #recommended_movies = give_recommendations(movie_bagofwords, 7, movies)
+    user = tp.get(state.scenario_id)
+    liked = user.liked.read()
+    liked_titles = [movie[1] for movie in liked]
+    disliked = user.disliked.read()
+    disliked_titles = [movie[1] for movie in disliked]
+    viewed = user.viewed.read()
+    viewed_titles = [movie[1] for movie in viewed]
+    recommended_movies = recommend_films_to_user(liked_titles, disliked_titles, viewed_titles)
+    state.content_selector = [(movie_id, movies.loc[movie_id, "title"]) for movie_id in recommended_movies]
 
 
 def refresh_user(state):
