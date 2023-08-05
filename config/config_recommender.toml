@@ -1,17 +1,10 @@
 [TAIPY]
 read_entity_retry = "3:int"
 
-[DATA_NODE.augmented_movies_dataset]
+[DATA_NODE.augmented_movies]
 storage_type = "csv"
 scope = "GLOBAL:SCOPE"
-path = "../Downloads/ml-25m/augmented_small_movies.csv"
-#path = "data/augmented_small_movies.csv"
-
-[DATA_NODE.imdb_top_1000]
-storage_type = "csv"
-scope = "GLOBAL:SCOPE"
-path = "../Downloads/ml-25m/IMDB_top_1000.csv"
-#path = "data/IMDB_top_1000.csv"
+path = "data/augmented_movies.csv"
 
 [DATA_NODE.movie_title]
 default_data = "Toy Story"
@@ -25,18 +18,18 @@ default_data = "10:int"
 
 [TASK.process_title]
 function = "algos.recommender_algos.process_title:function"
-inputs = [ "movie_title:SECTION", "augmented_movies_dataset:SECTION",]
+inputs = [ "movie_title:SECTION", "augmented_movies:SECTION",]
 outputs = [ "movie_bagofwords:SECTION",]
 skippable = "False:bool"
 
-[TASK.give_rcommendations]
+[TASK.give_recommendations]
 function = "algos.recommender_algos.give_recommendations:function"
-inputs = [ "movie_bagofwords:SECTION", "number_of_rec:SECTION", "imdb_top_1000:SECTION",]
+inputs = [ "movie_bagofwords:SECTION", "number_of_rec:SECTION", "augmented_movies:SECTION",]
 outputs = [ "recommendations:SECTION",]
 skippable = "False:bool"
 
 [PIPELINE.pipeline]
-tasks = [ "process_title:SECTION", "give_rcommendations:SECTION",]
+tasks = [ "process_title:SECTION", "give_recommendations:SECTION",]
 
 [SCENARIO.scenario]
 pipelines = [ "pipeline:SECTION",]

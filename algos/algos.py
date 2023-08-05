@@ -6,15 +6,12 @@ import numpy as np
 
 from algos.recommender_algos import process_title, give_recommendations
 
-def dumb(a,b,c):
+def recommend_films_to_user(a,b,c):
     recommended_content = []
     if len(a) > 0:
-        all_film_bag = ''
-        for film in a:
-            film_bag = process_title(film, movies)
-            all_film_bag = all_film_bag + ' ' + film_bag
+        all_film_bag = ' '.join([process_title(film, movies) for film in a])
 
-        recs = give_recommendations(all_film_bag, 30, IMDB_top_1000)
+        recs = give_recommendations(all_film_bag, 30, movies_for_recommendation)
         for rec in recs:
             if (b.count(rec) == 0) and (c.count(rec) == 0):
                 recommended_content.append(rec)
@@ -35,19 +32,6 @@ def search(title):
     print(results)
     return results
 
-def get_rating(movie_id):
-    try:
-        if int(movie_id) in ratings["movieId"].unique():
-            return {"Ratings" : list(ratings[ratings["movieId"] == int(movie_id)]["rating"])}
-        else:
-            return {"Ratings" : [0,1,2]}
-    except Exception as e:
-        print(movie_id, e)
-        return  {"Ratings" : [0,1,2]}
-
-
-def mean_rating(selected_film):
-    return float(np.mean(get_rating(selected_film)['Ratings']))
 
 def find_similar_movies(movie_id):
     similar_users = ratings[(ratings["movieId"] == movie_id) & (ratings["rating"] > 4)]["userId"].unique()
@@ -62,22 +46,22 @@ def find_similar_movies(movie_id):
     
     rec_percentages["score"] = rec_percentages["similar"] / rec_percentages["all"]
     rec_percentages = rec_percentages.sort_values("score", ascending=False)
-    return rec_percentages.head(10).merge(movies, left_index=True, right_on="movieId")[["score", "title", "genres"]]
+    return rec_percentages.head(10).merge(movies.reset_index(drop = True), left_index=True, right_on="movieId")[["score", "title", "genres", "movieId"]]
 
 
 vectorizer = TfidfVectorizer(ngram_range=(1,2))
 #movie_id = 89745
 
-ratings = pd.read_csv('../Downloads/ml-25m/ratings.csv')
-IMDB_top_1000 = pd.read_csv("../Downloads/ml-25m/IMDB_top_1000.csv")
+ratings = pd.read_parquet('data/ratings')
 
-movies = pd.read_csv('../Downloads/ml-25m/augmented_small_movies.csv')
+movies = pd.read_parquet('data/augmented_movies.parquet')
 
 #ratings = pd.read_csv('data/ratings.csv')
-#IMDB_top_1000 = pd.read_csv("data/IMDB_top_1000.csv")
 
-#movies = pd.read_csv('data/augmented_small_movies.csv')
+#movies = pd.read_csv('data/augmented_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
+movies.index = movies['movieId']
+movies_for_recommendation = movies[movies['Nb ratings']>=5_000]
 tfidf = vectorizer.fit_transform(movies["clean_title"])
 
 #print(search('Avengers'))

@@ -4,16 +4,13 @@ from taipy import Config, Scope
 from algos.recommender_algos import process_title, give_recommendations
 
 # Data Node configuration
-augmented_movie_cfg = Config.configure_data_node(id="augmented_movies_dataset",
-                                                storage_type="csv",
-                                                path="../Downloads/ml-25m/augmented_small_movies.csv",
-                                                #path="data/augmented_small_movies.csv",
+augmented_movie_cfg = Config.configure_data_node(id="augmented_movies",
+                                                storage_type="parquet",
+                                                path="data/augmented_movies.parquet",
+                                                #path="data/augmented_movies.csv",
                                                 scope=Scope.GLOBAL)
 
-imdb_top_1000_cfg = Config.configure_data_node(id="imdb_top_1000", storage_type="csv",
-path="../Downloads/ml-25m/IMDB_top_1000.csv",
-                                                #path="data/IMDB_top_1000.csv",
-                                                scope=Scope.GLOBAL)
+
 
 movie_title_cfg = Config.configure_data_node(id="movie_title", default_data="Toy Story")
 
@@ -32,7 +29,7 @@ process_title_cfg = Config.configure_task(id="process_title",
 
 give_recommendations_cfg = Config.configure_task(id="give_recommendations",
                                                 function=give_recommendations,
-                                                input=[movie_bag_cfg, num_rec_cfg, imdb_top_1000_cfg],
+                                                input=[movie_bag_cfg, num_rec_cfg, augmented_movie_cfg],
                                                 output=recommendations_cfg)
 
 # Pipeline configuration
