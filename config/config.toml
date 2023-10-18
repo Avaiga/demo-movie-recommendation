@@ -14,14 +14,19 @@ storage_type = "pickle"
 scope = "SCENARIO:SCOPE"
 default_data = [ ]
 
-[TASK.dumb]
-inputs = [ "viewed:SECTION", "liked:SECTION", "disliked:SECTION" ]
-outputs = [ ]
-function = "algos.algos.dumb:function"
+[DATA_NODE.recommendations_user]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+default_data = [ ]
+
+[TASK.recommend_films_to_user]
+inputs = ["liked:SECTION", "disliked:SECTION", "viewed:SECTION" ]
+outputs = ["recommendations_user:SECTION"]
+function = "algos.algos.recommend_films_to_user:function"
 skippable = "False:bool"
 
 [PIPELINE.pipeline]
-tasks = [ "dumb:SECTION" ]
+tasks = [ "recommend_films_to_user:SECTION" ]
 
 [SCENARIO.user]
 pipelines = [ "pipeline:SECTION" ]
