@@ -32,14 +32,9 @@ give_recommendations_cfg = Config.configure_task(id="give_recommendations",
                                                 input=[movie_bag_cfg, num_rec_cfg, augmented_movie_cfg],
                                                 output=recommendations_cfg)
 
-# Pipeline configuration
-
-pipeline_cfg = Config.configure_pipeline(id="pipeline",
-                                         task_configs=[process_title_cfg, give_recommendations_cfg])
-
 # Scenario configuration
 
 scenario_cfg = Config.configure_scenario(id="scenario",
-                                         pipeline_configs=pipeline_cfg)
+                                         task_configs=[process_title_cfg, give_recommendations_cfg])
 
 Config.export('config/config_recommender.toml')

@@ -1,4 +1,4 @@
-taipy==2.1
-scikit-learn==1.0.2
+taipy==3.1
+scikit-learn
 nltk
 rake_nltk

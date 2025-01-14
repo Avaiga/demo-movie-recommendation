@@ -1,3 +1,6 @@
 *.pyc
 *.csv
 .data/
+/user_data
+/.taipy
+/.vscode

@@ -3,10 +3,12 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import time
 
 from algos.recommender_algos import process_title, give_recommendations
 
 def recommend_films_to_user(a,b,c):
+    start = time.time()
     recommended_content = []
     if len(a) > 0:
         all_film_bag = ' '.join([process_title(film, movies) for film in a])
@@ -17,6 +19,7 @@ def recommend_films_to_user(a,b,c):
                 recommended_content.append(rec)
             if len(recommended_content) >= 10:
                 break
+    print("time for recommend_films_to_user", time.time() - start)
     return recommended_content
 
 def clean_title(title):
@@ -27,13 +30,12 @@ def search(title):
     title = clean_title(title)
     query_vec = vectorizer.transform([title])
     similarity = cosine_similarity(query_vec, tfidf).flatten()
-    indices = np.argpartition(similarity, -5)[-5:]
+    indices = np.argpartition(similarity, -5)[-4:]
     results = movies.iloc[indices].iloc[::-1]
-    print(results)
     return results
 
 
-def find_similar_movies(movie_id):
+def find_similar_movies(movie_id, num_rec=10):
     similar_users = ratings[(ratings["movieId"] == movie_id) & (ratings["rating"] > 4)]["userId"].unique()
     similar_user_recs = ratings[(ratings["userId"].isin(similar_users)) & (ratings["rating"] > 4)]["movieId"]
     similar_user_recs = similar_user_recs.value_counts() / len(similar_users)
@@ -46,25 +48,16 @@ def find_similar_movies(movie_id):
     
     rec_percentages["score"] = rec_percentages["similar"] / rec_percentages["all"]
     rec_percentages = rec_percentages.sort_values("score", ascending=False)
-    return rec_percentages.head(10).merge(movies.reset_index(drop = True), left_index=True, right_on="movieId")[["score", "title", "genres", "movieId"]]
+    return rec_percentages.head(num_rec).merge(movies.reset_index(drop = True), left_index=True, right_on="movieId")[["score", "title", "genres", "movieId"]]
 
 
 vectorizer = TfidfVectorizer(ngram_range=(1,2))
-#movie_id = 89745
 
 ratings = pd.read_parquet('data/ratings')
 
 movies = pd.read_parquet('data/augmented_movies.parquet')
 
-#ratings = pd.read_csv('data/ratings.csv')
-
-#movies = pd.read_csv('data/augmented_movies.csv')
 movies["clean_title"] = movies["title"].apply(clean_title)
 movies.index = movies['movieId']
 movies_for_recommendation = movies[movies['Nb ratings']>=5_000]
 tfidf = vectorizer.fit_transform(movies["clean_title"])
-
-#print(search('Avengers'))
-#start=time.time()
-#print(find_similar_movies(movie_id))
-#print(time.time()-start)

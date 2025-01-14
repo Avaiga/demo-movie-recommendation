@@ -1,10 +1,9 @@
 [TAIPY]
-read_entity_retry = "3:int"
 
 [DATA_NODE.augmented_movies]
-storage_type = "csv"
+storage_type = "parquet"
 scope = "GLOBAL:SCOPE"
-path = "data/augmented_movies.csv"
+path = "data/augmented_movies.parquet"
 
 [DATA_NODE.movie_title]
 default_data = "Toy Story"
@@ -28,10 +27,10 @@ inputs = [ "movie_bagofwords:SECTION", "number_of_rec:SECTION", "augmented_movie
 outputs = [ "recommendations:SECTION",]
 skippable = "False:bool"
 
-[PIPELINE.pipeline]
-tasks = [ "process_title:SECTION", "give_recommendations:SECTION",]
-
 [SCENARIO.scenario]
-pipelines = [ "pipeline:SECTION",]
+tasks = [ "process_title:SECTION", "give_recommendations:SECTION",]
+additional_data_nodes = []
 
 [SCENARIO.scenario.comparators]
+
+[SCENARIO.scenario.sequences]

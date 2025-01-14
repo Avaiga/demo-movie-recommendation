@@ -25,8 +25,6 @@ outputs = ["recommendations_user:SECTION"]
 function = "algos.algos.recommend_films_to_user:function"
 skippable = "False:bool"
 
-[PIPELINE.pipeline]
-tasks = [ "recommend_films_to_user:SECTION" ]
-
 [SCENARIO.user]
-pipelines = [ "pipeline:SECTION" ]
+tasks = [ "recommend_films_to_user:SECTION",]
+additional_data_nodes = []
